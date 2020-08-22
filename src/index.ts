@@ -1,9 +1,9 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
-import { Vector3 } from "@babylonjs/core/Maths/math";
+import { Vector3, Color3 } from "@babylonjs/core/Maths/math";
 import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
-import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
-import { PointLight } from "@babylonjs/core/Lights/pointLight";
+import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
+import { SpotLight } from "@babylonjs/core/Lights/spotLight";
 import "@babylonjs/core/Materials/standardMaterial";
 
 // Required side effects to populate the Create methods on the mesh class. Without this, the bundle would be smaller but the createXXX methods from mesh would not be accessible.
@@ -43,9 +43,14 @@ class Playground {
         groundMaterial.ambientTexture = new Texture("textures/groundTextureSrc.png", scene);
         groundPlane.material = groundMaterial;
 
-        // Add lights to the scene
-        new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
-        new PointLight("light2", new Vector3(0, 1, -1), scene);
+        // (3) Add directional light that is not very bright. And point light high above.
+        var light = new DirectionalLight("light1", new Vector3(1, 1, 0), scene);
+        light.diffuse = new Color3(0, 1, 1);
+        light.specular = new Color3(0, 1, 1);
+        light.intensity = .5;
+        
+        var light2 = new SpotLight("spotLight", new Vector3(0, 5, 0), new Vector3(0, -1, 0), Math.PI * .875,  2, scene);
+
 
         // Add and manipulate meshes in the scene
         MeshBuilder.CreateSphere("sphere", {diameter:2}, scene);
