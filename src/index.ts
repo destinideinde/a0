@@ -10,6 +10,8 @@ import "@babylonjs/core/Materials/standardMaterial";
 import {MeshBuilder} from  "@babylonjs/core/Meshes/meshBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
+import { ParticleSystem } from "@babylonjs/core/Particles/particleSystem";
 
 const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement; // Get the canvas element 
 const engine = new Engine(canvas, true); // Generate the BABYLON 3D engine
@@ -20,8 +22,7 @@ class Playground {
     public static CreateScene(engine: Engine, canvas: HTMLCanvasElement): Scene {
         // Create the scene space
         const scene = new Scene(engine);
-
-        // Parameters : name, position, scene
+        var objects = [];
 
         // (1) Create a universal camera.
         var camera = new UniversalCamera("UniversalCamera", new Vector3(0, 0, -10), scene);
@@ -44,18 +45,41 @@ class Playground {
         groundMaterial.emissiveTexture = new Texture("textures/groundTextureSrc.png", scene);
         groundMaterial.ambientTexture = new Texture("textures/groundTextureSrc.png", scene);
         groundPlane.material = groundMaterial;
+        //groundPlane.receiveShadows = true;
 
         // (3) Add directional light that is not very bright. And point light high above.
         var light = new DirectionalLight("light1", new Vector3(1, 1, 0), scene);
         light.diffuse = new Color3(0, 1, 1);
         light.specular = new Color3(0, 1, 1);
         light.intensity = .5;
-        
-        var light2 = new SpotLight("spotLight", new Vector3(0, 5, 0), new Vector3(0, -1, 0), Math.PI * .875,  2, scene);
-
+        var light2 = new SpotLight("spotLight", new Vector3(0, 3, 0), new Vector3(0, -1, 0), Math.PI * .875,  2, scene);
 
         // Add and manipulate meshes in the scene
-        MeshBuilder.CreateSphere("sphere", {diameter:2}, scene).position = new Vector3(0, 1, 2);
+        var sphere = MeshBuilder.CreateSphere("sphere", {diameter:2}, scene);
+        sphere.position = new Vector3(0, 1, 2);
+        //objects.push(sphere);
+        
+        // (6) Add particle system.
+        var particleSystem = new ParticleSystem("particles", 2000, scene);
+        particleSystem.emitter = sphere;
+        particleSystem.particleTexture = new Texture("textures/groundTextureSrc.png", scene);
+        particleSystem.minEmitBox = Vector3.Zero();
+        particleSystem.maxEmitBox = new Vector3(1, 1, 1);
+        particleSystem.start();
+
+
+        // (7) Add shadows.
+        // var shadowGeneratorDirectional = new ShadowGenerator(1024, light);
+        //var shadowGeneratorSpot = new ShadowGenerator(1024, light2);
+        //shadowGeneratorDirectional.addShadowCaster(sphere);
+        //shadowGeneratorSpot.addShadowCaster(sphere);
+
+       // for (var i = 0; i < objects.length; i++) {
+         //   if (objects[i] != null) {
+                //shadowGeneratorDirectional.getShadowMap().renderList.push(objects[i]);
+                //shadowGeneratorSpot.getShadowMap().renderList.push(objects[i]);
+           // }
+        //}
 
         return scene;
     }
