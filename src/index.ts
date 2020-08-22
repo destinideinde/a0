@@ -32,10 +32,12 @@ class Playground {
         var groundPlane = MeshBuilder.CreatePlane(
                 "ground plane", 
                 { 
-                    width : 5,
-                    height : 5
+                    width : 10,
+                    height : 10
                 },
                 scene);
+        groundPlane.position = new Vector3(0, -.5, -10);
+        groundPlane.rotation.x = Math.PI * .5;
         var groundMaterial = new StandardMaterial("textures/groundTextureSrc", scene);
         groundMaterial.diffuseTexture = new Texture("textures/groundTextureSrc.png", scene);
         groundMaterial.specularTexture = new Texture("textures/groundTextureSrc.png", scene);
@@ -53,7 +55,7 @@ class Playground {
 
 
         // Add and manipulate meshes in the scene
-        MeshBuilder.CreateSphere("sphere", {diameter:2}, scene);
+        MeshBuilder.CreateSphere("sphere", {diameter:2}, scene).position = new Vector3(0, 1, 2);
 
         return scene;
     }
