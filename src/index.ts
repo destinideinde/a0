@@ -1,7 +1,7 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math";
-import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
+import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import "@babylonjs/core/Materials/standardMaterial";
@@ -19,9 +19,11 @@ class Playground {
         // Create the scene space
         const scene = new Scene(engine);
 
-        // Add a camera to the scene and attach it to the canvas
-        const camera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, 
-                                         new Vector3(0,0,5), scene);
+        // Parameters : name, position, scene
+
+        // (1) Create a universal camera.
+        var camera = new UniversalCamera("UniversalCamera", new Vector3(0, 0, -10), scene);
+        camera.setTarget(Vector3.Zero());
         camera.attachControl(canvas, true);
 
         // Add lights to the scene
