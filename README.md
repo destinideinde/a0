@@ -10,8 +10,8 @@ The objective of this assignment is two-fold:
 
 ## Name and GT user-id
 
-Name: 
-User ID:
+Name: Destini Deinde-Smith
+User ID: dds7
 
 ## Rubric
 
